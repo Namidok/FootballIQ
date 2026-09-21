@@ -15,7 +15,15 @@ router = APIRouter(prefix="/teams", tags=["teams"])
 def _team_brief(team: Team | None) -> dict | None:
     if not team:
         return None
-    return {"id": team.id, "name": team.name, "short_name": team.short_name, "crest_url": team.crest_url}
+    return {
+        "id": team.id,
+        "name": team.name,
+        "short_name": team.short_name,
+        "crest_url": team.crest_url,
+        "primary_color": team.primary_color,
+        "primary_color_ink": team.primary_color_ink,
+        "secondary_color": team.secondary_color,
+    }
 
 
 def _domestic_league(db: Session, team_id: int, season: str = CURRENT_SEASON) -> League | None:
@@ -78,7 +86,15 @@ def team_dashboard(team_id: int, db: Session = Depends(get_db)):
         news = []  # NEWSAPI_KEY may not be configured locally
 
     return {
-        "team": {"id": team.id, "name": team.name, "crest_url": team.crest_url, "source_id": team.source_id},
+        "team": {
+            "id": team.id,
+            "name": team.name,
+            "crest_url": team.crest_url,
+            "source_id": team.source_id,
+            "primary_color": team.primary_color,
+            "primary_color_ink": team.primary_color_ink,
+            "secondary_color": team.secondary_color,
+        },
         "league": None if not domestic_league else {"code": domestic_league.code, "name": domestic_league.name},
         "next_fixture": None if not next_fixture else {
             "id": next_fixture.id,

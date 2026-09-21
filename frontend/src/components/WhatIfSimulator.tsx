@@ -63,7 +63,7 @@ export default function WhatIfSimulator({ matchId, basePrediction, homeLabel, aw
   }
 
   return (
-    <Card eyebrow="Interactive inference" title="What-If Simulator">
+    <Card accent title="What-If Simulator">
       <p className="mb-5 text-xs" style={{ color: 'var(--text-muted)' }}>
         Adjusts real inputs to the model (xG, form) — no synthetic data, just bounded deltas on
         this fixture's actual feature vector.
@@ -100,15 +100,15 @@ export default function WhatIfSimulator({ matchId, basePrediction, homeLabel, aw
         <button
           onClick={runSimulation}
           disabled={loading || !isDirty}
-          className="rounded-full px-4 py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-30"
-          style={{ background: 'var(--home)' }}
+          className="px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-30"
+          style={{ background: 'var(--accent)', color: 'var(--accent-ink)' }}
         >
           {loading ? 'Recalculating…' : 'Recalculate probability'}
         </button>
         {result && (
           <button
             onClick={reset}
-            className="rounded-full px-4 py-2 text-sm transition"
+            className="px-4 py-2 text-sm transition"
             style={{ color: 'var(--text-secondary)', border: '1px solid var(--border)' }}
           >
             Reset
@@ -124,13 +124,13 @@ export default function WhatIfSimulator({ matchId, basePrediction, homeLabel, aw
 
       <div className="mt-6 grid grid-cols-1 gap-6 border-t pt-5 sm:grid-cols-2" style={{ borderColor: 'var(--gridline)' }}>
         <div>
-          <p className="mb-3 text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <p className="mb-3 text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
             Base prediction
           </p>
           <PredictionBar prediction={basePrediction} homeLabel={homeLabel} awayLabel={awayLabel} />
         </div>
         <div>
-          <p className="mb-3 text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <p className="mb-3 text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
             {result ? 'Simulated prediction' : 'Adjust inputs above'}
           </p>
           {result ? (

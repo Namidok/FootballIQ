@@ -27,6 +27,15 @@ def list_teams(league_code: str, season: str = CURRENT_SEASON, db: Session = Dep
         .all()
     )
     return [
-        {"id": t.id, "name": t.name, "short_name": t.short_name, "tla": t.tla, "crest_url": t.crest_url}
+        {
+            "id": t.id,
+            "name": t.name,
+            "short_name": t.short_name,
+            "tla": t.tla,
+            "crest_url": t.crest_url,
+            "primary_color": t.primary_color,
+            "primary_color_ink": t.primary_color_ink,
+            "secondary_color": t.secondary_color,
+        }
         for t in teams
     ]

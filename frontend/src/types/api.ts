@@ -5,7 +5,13 @@ export interface League {
   emblem_url: string | null
 }
 
-export interface Team {
+export interface TeamColors {
+  primary_color: string | null
+  primary_color_ink: string | null
+  secondary_color: string | null
+}
+
+export interface Team extends TeamColors {
   id: number
   name: string
   short_name: string | null
@@ -66,7 +72,7 @@ export interface Standings {
 }
 
 export interface TeamDashboard {
-  team: { id: number; name: string; crest_url: string | null; source_id: string | null }
+  team: { id: number; name: string; crest_url: string | null; source_id: string | null } & TeamColors
   league: { code: string; name: string } | null
   next_fixture: NextFixture | null
   standings: Standings | null

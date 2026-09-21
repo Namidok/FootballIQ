@@ -3,20 +3,36 @@
 :root {
   color-scheme: dark;
 
-  /* Chart chrome & ink, dark mode (dataviz reference palette) */
-  --surface-1: #1a1a19;
-  --surface-2: #202220;
-  --page: #0d0d0d;
-  --text-primary: #ffffff;
-  --text-secondary: #c3c2b7;
-  --text-muted: #898781;
-  --gridline: #2c2c2a;
-  --border: rgba(255, 255, 255, 0.1);
+  --font-body: "Karla", system-ui, sans-serif;
+  --font-score: "Oswald", system-ui, sans-serif;
 
-  /* Diverging pair: home win (blue) <-> away win (red), neutral gray midpoint (draw) */
+  /* Pitch-charcoal chrome, not flat near-black */
+  --surface-0: #0e1210;
+  --surface-1: rgba(30, 36, 28, 0.55);
+  --surface-1-solid: #1a2018;
+  --surface-2: rgba(255, 255, 255, 0.04);
+  --text-primary: #f4f2ea;
+  --text-secondary: #b8bcae;
+  --text-muted: #7c8073;
+  --gridline: #2a2f23;
+  --border: rgba(244, 242, 234, 0.1);
+  --glass-border: rgba(244, 242, 234, 0.12);
+
+  /* Single expressive accent: floodlight amber — reserved for attention/CTA,
+     never reused for home/away identity below */
+  --accent: #e8a23d;
+  --accent-ink: #191204;
+
+  /* Diverging pair: home win (blue) <-> away win (red), neutral gray midpoint (draw).
+     Semantic to the prediction chart — validated against the dataviz palette,
+     kept separate from --accent so chrome and chart identity never collide. */
   --home: #3987e5;
   --draw: #6b6a66;
   --away: #e66767;
+
+  /* Retargeted by useTeamTheme() to the viewed team's real crest-derived secondary
+     color — drives the ambient background's second orb, defaults to --home's hue. */
+  --team-secondary: #3987e5;
 
   /* Sequential blue ramp, for magnitude (scoreline heatmap) */
   --seq-100: #184f95;
@@ -25,7 +41,7 @@
   --seq-700: #2a78d6;
   --seq-900: #3987e5;
 
-  --good: #0ca30c;
+  --good: #6fb35c;
 }
 
 * {
@@ -34,8 +50,8 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background: var(--page);
+  font-family: var(--font-body);
+  background: var(--surface-0);
   color: var(--text-secondary);
 }
 
@@ -44,10 +60,49 @@ body {
 }
 
 ::selection {
-  background: var(--home);
-  color: white;
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+.font-score {
+  font-family: var(--font-score);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.glass {
+  background: var(--surface-1);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--glass-border);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--surface-1-solid);
+  }
+}
+
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.6); opacity: 0.5; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot::before { animation: none; }
 }

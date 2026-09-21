@@ -29,6 +29,11 @@ class Team(Base):
     short_name = Column(String, nullable=True)
     tla = Column(String, nullable=True)
     crest_url = Column(String, nullable=True)
+    # derived from the actual crest image (see pipeline/clients/crest_colors.py) — real,
+    # not hand-typed brand guesses — used to theme a team's dashboard
+    primary_color = Column(String, nullable=True)
+    primary_color_ink = Column(String, nullable=True)
+    secondary_color = Column(String, nullable=True)
     source_id = Column(String, nullable=True, index=True)      # football-data.org team id
     clubelo_name = Column(String, nullable=True)               # name as used on clubelo.com
     fbref_id = Column(String, nullable=True)

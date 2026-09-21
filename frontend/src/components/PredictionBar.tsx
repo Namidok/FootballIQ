@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import type { Prediction } from '../types/api'
+import AnimatedNumber from './AnimatedNumber'
 
 interface Props {
   prediction: Prediction
@@ -7,7 +9,7 @@ interface Props {
 }
 
 function pct(n: number) {
-  return `${Math.round(n * 100)}%`
+  return Math.round(n * 100)
 }
 
 export default function PredictionBar({ prediction, homeLabel, awayLabel }: Props) {
@@ -16,12 +18,25 @@ export default function PredictionBar({ prediction, homeLabel, awayLabel }: Prop
   return (
     <div className="space-y-3">
       <div className="flex h-3 overflow-hidden rounded-full" style={{ background: 'var(--gridline)' }}>
-        <div
-          style={{ width: pct(p_home_win), background: 'var(--home)' }}
-          title={`${homeLabel} win: ${pct(p_home_win)}`}
+        <motion.div
+          animate={{ width: `${pct(p_home_win)}%` }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{ background: 'linear-gradient(90deg, var(--home), #5aa3f5)' }}
+          title={`${homeLabel} win: ${pct(p_home_win)}%`}
         />
-        <div className="mx-px" style={{ width: pct(p_draw), background: 'var(--draw)' }} title={`Draw: ${pct(p_draw)}`} />
-        <div style={{ width: pct(p_away_win), background: 'var(--away)' }} title={`${awayLabel} win: ${pct(p_away_win)}`} />
+        <motion.div
+          animate={{ width: `${pct(p_draw)}%` }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-px"
+          style={{ background: 'var(--draw)' }}
+          title={`Draw: ${pct(p_draw)}%`}
+        />
+        <motion.div
+          animate={{ width: `${pct(p_away_win)}%` }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          style={{ background: 'linear-gradient(90deg, #f08a8a, var(--away))' }}
+          title={`${awayLabel} win: ${pct(p_away_win)}%`}
+        />
       </div>
 
       {/* Legend: color is never the only carrier of identity — swatch + label + value */}
@@ -38,12 +53,12 @@ export default function PredictionBar({ prediction, homeLabel, awayLabel }: Prop
   )
 }
 
-function LegendItem({ color, label, value }: { color: string; label: string; value: string }) {
+function LegendItem({ color, label, value }: { color: string; label: string; value: number }) {
   return (
     <span className="flex items-center gap-1.5" style={{ color: 'var(--text-secondary)' }}>
       <span className="inline-block h-2 w-2 rounded-full" style={{ background: color }} />
-      <span className="tabular-nums font-semibold" style={{ color: 'var(--text-primary)' }}>
-        {value}
+      <span className="font-score text-base" style={{ color: 'var(--text-primary)' }}>
+        <AnimatedNumber value={value} suffix="%" />
       </span>
       <span className="hidden sm:inline">{label}</span>
     </span>

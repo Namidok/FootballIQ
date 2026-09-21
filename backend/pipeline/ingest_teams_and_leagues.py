@@ -13,6 +13,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from db.base import SessionLocal, init_db
 from db.models import League, Team, TeamLeagueMembership
+from pipeline.clients.crest_colors import extract_team_colors
 from pipeline.clients.football_data import FootballDataClient
 from pipeline.config import LEAGUES
 
@@ -59,6 +60,13 @@ def run(season: str = CURRENT_SEASON):
                     )
                     db.add(team)
                     db.flush()
+
+                if team.crest_url and not team.primary_color:
+                    colors = extract_team_colors(team.crest_url)
+                    if colors:
+                        team.primary_color = colors["primary"]
+                        team.primary_color_ink = colors["primary_ink"]
+                        team.secondary_color = colors["secondary"]
 
                 membership = db.query(TeamLeagueMembership).filter_by(
                     team_id=team.id, league_id=league.id, season=season,

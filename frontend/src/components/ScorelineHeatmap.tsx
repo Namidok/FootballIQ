@@ -59,11 +59,11 @@ export default function ScorelineHeatmap({ grid, homeLabel, awayLabel }: Props) 
                   return (
                     <td key={a} className="p-0">
                       <div
-                        className="flex h-8 w-8 items-center justify-center rounded text-[10px] tabular-nums"
+                        className="flex h-8 w-8 cursor-default items-center justify-center rounded text-[10px] tabular-nums transition-transform duration-150 ease-out hover:z-10 hover:scale-125"
                         style={{
                           background: colorFor(p, max),
                           color: p / max > 0.5 ? '#ffffff' : 'var(--text-primary)',
-                          boxShadow: isBest ? '0 0 0 2px var(--home)' : 'none',
+                          boxShadow: isBest ? '0 0 0 2px var(--accent)' : 'none',
                         }}
                         title={`${homeLabel} ${h}–${a} ${awayLabel}: ${(p * 100).toFixed(1)}%`}
                       >
@@ -78,8 +78,8 @@ export default function ScorelineHeatmap({ grid, homeLabel, awayLabel }: Props) 
         </table>
       </div>
       <p className="mt-2 text-[11px]" style={{ color: 'var(--text-muted)' }}>
-        Rows = {homeLabel} goals · Columns = {awayLabel} goals · cell = win probability of that
-        exact scoreline
+        Rows track {homeLabel} goals, columns track {awayLabel} goals — each cell is the
+        probability of that exact final score.
       </p>
     </div>
   )
